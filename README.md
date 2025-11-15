@@ -22,7 +22,7 @@ Set to 'true' if the build should be aborted.
 ```yaml
 uses: actions/mrmat-debounce-action@latest
 with:
-    github-token: sample-token
+    github_token: sample-token
 ```
 
 ## How to build this
