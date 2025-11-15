@@ -7,7 +7,7 @@ PR for it.
 
 ## Inputs
 
-### github-token
+### github_token
 
 **Required** Token to use for GitHub API requests.
 

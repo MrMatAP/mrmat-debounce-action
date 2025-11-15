@@ -68,7 +68,7 @@ describe('GitHub Actions Interface', () => {
         async ({ repo, eventName, ref, open_prs, expected }) => {
             core.getInput.mockImplementation((input: string) => {
                 switch (input) {
-                    case 'github-token':
+                    case 'github_token':
                         return 'test-token'
                     default:
                         throw new Error(`Unexpected input: ${input}`)
