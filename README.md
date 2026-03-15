@@ -29,7 +29,17 @@ with:
 
 Run `npm install` and then `npm run bundle`.
 
+## How to patch this
+
+```bash
+$ npm outdated
+$ npx npm-check-updates --format group -u
+$ npm install
+```
+
 ## How to test this
+
+Run 'npm run test' or 'jest'.
 
 ### Running the action locally
 

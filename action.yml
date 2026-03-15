@@ -3,6 +3,10 @@ author: MrMat
 description:
     A GitHub Action to avoid builds on push when there is a corresponding PR
 
+branding:
+    icon: fast-forward
+    color: purple
+
 inputs:
     github_token:
         description: Token to use for GitHub API requests.
