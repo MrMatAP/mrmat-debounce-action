@@ -32967,11 +32967,11 @@ function getOctokit(token, options, ...additionalPlugins) {
 
 async function run() {
     try {
-        const github_token = getInput('github_token');
+        const githubToken = getInput('github_token');
         const ref = context.ref.replace('refs/heads/', '');
-        const gh = getOctokit(github_token);
+        const gh = getOctokit(githubToken);
         const repo = context.repo;
-        const open_prs = await gh.rest.pulls.list({
+        const openPRs = await gh.rest.pulls.list({
             owner: repo.owner,
             repo: repo.repo,
             state: 'open',
@@ -32988,12 +32988,13 @@ async function run() {
             setOutput('abort', false);
             return;
         }
-        if (open_prs.data.length === 0) {
+        if (openPRs.data.length === 0) {
             info('No relevant open pull requests found. Continuing with build.');
             setOutput('abort', false);
             return;
         }
-        open_prs.data.forEach((pr) => {
+        openPRs.data.forEach((pr) => {
+            info(`Ignoring PR ${pr.number} - ${pr.title} because it is on ${ref} rather than head ${pr.head.ref}`);
             if (ref === pr.head.ref) {
                 info(`Found open PR ${pr.number}: '${pr.title}' with head ${ref}. Debouncing this push build.`);
             }
