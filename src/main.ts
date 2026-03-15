@@ -21,6 +21,14 @@ export async function run(): Promise<void> {
             return
         }
 
+        if (github.context.eventName === 'push' && ref === 'main') {
+            core.info(
+                'Push event on main branch detected. Continuing with build.'
+            )
+            core.setOutput('abort', false)
+            return
+        }
+
         if (open_prs.data.length === 0) {
             core.info(
                 'No relevant open pull requests found. Continuing with build.'

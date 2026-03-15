@@ -62,6 +62,25 @@ describe('GitHub Actions Interface', () => {
                 info: 'Not a push event. Continuing with build.',
                 abort: false
             }
+        },
+        {
+            repo: { owner: 'MrMat', repo: 'test' },
+            eventName: 'push',
+            ref: 'main',
+            open_prs: {
+                data: [
+                    {
+                        number: 23,
+                        title: 'Awesome PR 23',
+                        head: { ref: 'feature/foo' }
+                    }
+                ]
+            },
+            expected: {
+                desc: 'Push on the main branch builds, even when there is a matching PR',
+                info: 'Push event on main branch detected. Continuing with build.',
+                abort: false
+            }
         }
     ])(
         '$expected.desc',
