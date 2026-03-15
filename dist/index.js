@@ -59583,6 +59583,11 @@ async function run() {
             coreExports.setOutput('abort', false);
             return;
         }
+        if (context.eventName === 'push' && ref === 'main') {
+            coreExports.info('Push event on main branch detected. Continuing with build.');
+            coreExports.setOutput('abort', false);
+            return;
+        }
         if (open_prs.data.length === 0) {
             coreExports.info('No relevant open pull requests found. Continuing with build.');
             coreExports.setOutput('abort', false);
