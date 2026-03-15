@@ -3,11 +3,11 @@ import * as github from '@actions/github'
 
 export async function run(): Promise<void> {
     try {
-        const github_token: string = core.getInput('github_token')
+        const githubToken: string = core.getInput('github_token')
         const ref = github.context.ref.replace('refs/heads/', '')
-        const gh = github.getOctokit(github_token)
+        const gh = github.getOctokit(githubToken)
         const repo = github.context.repo
-        const open_prs = await gh.rest.pulls.list({
+        const openPRs = await gh.rest.pulls.list({
             owner: repo.owner,
             repo: repo.repo,
             state: 'open',
@@ -29,7 +29,7 @@ export async function run(): Promise<void> {
             return
         }
 
-        if (open_prs.data.length === 0) {
+        if (openPRs.data.length === 0) {
             core.info(
                 'No relevant open pull requests found. Continuing with build.'
             )
@@ -37,7 +37,10 @@ export async function run(): Promise<void> {
             return
         }
 
-        open_prs.data.forEach((pr) => {
+        openPRs.data.forEach((pr) => {
+            core.info(
+                `Ignoring PR ${pr.number} - ${pr.title} because it is on ${ref} rather than head ${pr.head.ref}`
+            )
             if (ref === pr.head.ref) {
                 core.info(
                     `Found open PR ${pr.number}: '${pr.title}' with head ${ref}. Debouncing this push build.`
