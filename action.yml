@@ -12,5 +12,5 @@ outputs:
         description: Set to true if the build should be aborted.
 
 runs:
-    using: node20
+    using: node24
     main: dist/index.js
