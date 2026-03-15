@@ -38,6 +38,9 @@ export async function run(): Promise<void> {
         }
 
         open_prs.data.forEach((pr) => {
+            core.info(
+                `Ignoring PR ${pr.number} - ${pr.title} because it is on ${ref} rather than head ${pr.head.ref}`
+            )
             if (ref === pr.head.ref) {
                 core.info(
                     `Found open PR ${pr.number}: '${pr.title}' with head ${ref}. Debouncing this push build.`
