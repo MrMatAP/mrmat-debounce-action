@@ -119,3 +119,51 @@ describe('GitHub Actions Interface', () => {
         }
     )
 })
+
+describe('Error handling', () => {
+    test('Calls setFailed when the API throws an Error', async () => {
+        core.getInput.mockImplementation(() => 'test-token')
+        // @ts-expect-error - Mocking the getOctokit function
+        github.getOctokit.mockImplementation(() => {
+            return {
+                rest: {
+                    pulls: {
+                        list: () => {
+                            throw new Error('API request failed')
+                        }
+                    }
+                }
+            }
+        })
+        github.context.eventName = 'push'
+        github.context.ref = 'refs/heads/feature/foo'
+
+        await run()
+
+        expect(core.setFailed).toHaveBeenCalledWith('API request failed')
+        expect(core.setOutput).not.toHaveBeenCalled()
+    })
+
+    test('Calls setFailed when a non-Error value is thrown', async () => {
+        core.getInput.mockImplementation(() => 'test-token')
+        // @ts-expect-error - Mocking the getOctokit function
+        github.getOctokit.mockImplementation(() => {
+            return {
+                rest: {
+                    pulls: {
+                        list: () => {
+                            throw 'unexpected string error'
+                        }
+                    }
+                }
+            }
+        })
+        github.context.eventName = 'push'
+        github.context.ref = 'refs/heads/feature/foo'
+
+        await run()
+
+        expect(core.setFailed).toHaveBeenCalledWith('unexpected string error')
+        expect(core.setOutput).not.toHaveBeenCalled()
+    })
+})
