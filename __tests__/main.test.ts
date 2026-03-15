@@ -152,7 +152,7 @@ describe('Error handling', () => {
                 rest: {
                     pulls: {
                         list: () => {
-                            throw 'unexpected string error'
+                            throw new Error('unexpected string error')
                         }
                     }
                 }
